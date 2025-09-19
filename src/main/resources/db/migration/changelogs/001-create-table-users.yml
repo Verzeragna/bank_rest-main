@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_users
+      author: andreevsv
+      changes:
+        - sql: |
+            CREATE TYPE role_type AS ENUM ('ADMIN', 'USER');
+        - sql: |
+            CREATE TYPE user_status AS ENUM ('ACTIVE', 'BLOCKED', 'DELETED');
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: VARCHAR(50)
+              - column:
+                  name: login
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: user_status
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: role_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            columnNames: login
+            tableName: users
+            constraintName: uq_login

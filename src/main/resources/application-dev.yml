@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankcards?currentSchema=public
+    username: postgres
+    password: 05konrad05
+jwt:
+  secret:
+    access: 4e56c083891276a6bd36dc4f78ae1928d99ebd676be5387cbc26602c9876fb182bcce85f
+
+encryption:
+  secret: 221eb2c87428d0718a2da15cee213485

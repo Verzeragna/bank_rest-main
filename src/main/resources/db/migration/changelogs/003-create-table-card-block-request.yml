@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_card_block_request
+      author: andreevsv
+      changes:
+        - sql: |
+            CREATE TYPE card_block_request_status AS ENUM ('CREATED', 'IN_PROGRESS', 'DONE');
+        - createTable:
+            tableName: card_block_request
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_number
+                  type: VARCHAR(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: card_block_request_status
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            columnNames: user_id,card_id
+            tableName: card_block_request
+            constraintName: uq_user_card

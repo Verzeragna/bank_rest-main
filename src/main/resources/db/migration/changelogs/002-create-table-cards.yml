@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_cards
+      author: andreevsv
+      changes:
+        - sql: |
+            CREATE TYPE card_status AS ENUM ('ACTIVE', 'BLOCKED', 'EXPIRED');
+        - createTable:
+            tableName: cards
+            columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+                - column:
+                    name: number
+                    type: VARCHAR(255)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: expire_date
+                    type: TIMESTAMP
+                    constraints:
+                      nullable: false
+                - column:
+                    name: created_at
+                    type: TIMESTAMP
+                    constraints:
+                      nullable: false
+                - column:
+                    name: status
+                    type: card_status
+                    constraints:
+                      nullable: false
+                - column:
+                    name: owner_id
+                    type: BIGINT REFERENCES users(id)
+                    constraints:
+                      nullable: false
+        - addUniqueConstraint:
+            columnNames: number
+            tableName: cards
+            constraintName: uq_number
+        - createTable:
+            tableName: card_balance
+            columns:
+              - column:
+                  name: card_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: NUMBER(35,2)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_card_id
+            baseTableName: card_balance
+            baseColumnNames: card_id
+            referencedTableName: cards
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE

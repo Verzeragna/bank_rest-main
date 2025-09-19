@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: bankcards
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    default-schema: public
+    change-log: classpath:db/migration/master_changelog.yml
+  jpa:
+    properties:
+      hibernate:
+        order_updates: true
+        batch_versioned_data: true
+  profiles:
+    active: dev
+server:
+  port: 8010
+  servlet:
+    context-path: /bankcards
+    session:
+      timeout: 15
+
+jwt:
+  secret:
+    access:
+
+encryption:
+  secret:
