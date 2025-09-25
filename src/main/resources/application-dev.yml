@@ -9,3 +9,8 @@ jwt:
 
 encryption:
   secret: 221eb2c87428d0718a2da15cee213485
+
+cors:
+  allowed:
+    origins:
+      - *
