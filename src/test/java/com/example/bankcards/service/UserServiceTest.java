@@ -2,6 +2,7 @@ package com.example.bankcards.service;
 
 import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.User;
+import com.example.bankcards.entity.UserStatus;
 import com.example.bankcards.exception.UserAlreadyExistException;
 import com.example.bankcards.exception.UserNotFoundException;
 import com.example.bankcards.repository.UserRepository;
@@ -180,6 +181,24 @@ class UserServiceTest {
 
         assertThrows(UserAlreadyExistException.class, () -> {
             userService.createUser(user);
+        });
+    }
+
+    @Test
+    void changeUserStatus_success() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
+
+        userService.changeUserStatus(1L, UserStatus.BLOCKED);
+
+        verify(userRepository).updateUserStatus(1L, UserStatus.BLOCKED);
+    }
+
+    @Test
+    void changeUserStatus_userNotFound() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> {
+            userService.changeUserStatus(1L, UserStatus.BLOCKED);
         });
     }
 }
