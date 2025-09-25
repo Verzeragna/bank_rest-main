@@ -17,6 +17,14 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
 
+  /**
+   * Authenticates a user and returns a JWT token.
+   *
+   * @param authRequest The authentication request containing login and password.
+   * @return A DTO containing the JWT access and refresh tokens.
+   * @throws UserNotFoundException if the user with the given login is not found.
+   * @throws IncorrectPasswordException if the provided password is incorrect.
+   */
   public JwtAuthenticationDto authenticate(AuthenticationRequest authRequest) {
     var userOpt = userRepository.findByLogin(authRequest.getLogin());
     if (userOpt.isEmpty()) {

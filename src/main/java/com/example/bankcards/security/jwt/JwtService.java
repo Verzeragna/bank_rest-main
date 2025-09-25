@@ -24,17 +24,26 @@ public class JwtService {
   private static final Logger log = LoggerFactory.getLogger(JwtService.class);
   private final SecretKey jwtAccessSecret;
 
-  @Value("${logging.include-application-group:true}")
-  private String loggingIncludeApplicationGroup;
-
   public JwtService(@Value("${jwt.secret.access}") String jwtAccessSecret) {
     this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
   }
 
+  /**
+   * Generates an authentication token for the given login.
+   *
+   * @param login The login for which to generate the token.
+   * @return A DTO containing the JWT.
+   */
   public JwtAuthenticationDto generateAuthToken(@NonNull String login) {
     return new JwtAuthenticationDto(generateJwtToken(login));
   }
 
+  /**
+   * Extracts the login from the given JWT.
+   *
+   * @param token The JWT from which to extract the login.
+   * @return The login contained in the token.
+   */
   public String getLoginFromToken(@NonNull String token) {
     return Jwts.parserBuilder()
             .setSigningKey(jwtAccessSecret)
@@ -44,6 +53,12 @@ public class JwtService {
             .getSubject();
   }
 
+  /**
+   * Validates the given JWT.
+   *
+   * @param token The JWT to validate.
+   * @return {@code true} if the token is valid, {@code false} otherwise.
+   */
   public boolean validateJwtToken(@NonNull String token) {
     try {
       Jwts.parserBuilder()
