@@ -22,6 +22,12 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final CardService cardService;
 
+  /**
+   * Registers a new user.
+   *
+   * @param user The user to register.
+   * @throws UserAlreadyExistException if a user with the same login already exists.
+   */
   @Transactional
   public void userRegistration(User user) {
     var userDb = userRepository.findByLogin(user.getLogin());
@@ -39,6 +45,12 @@ public class UserService {
     userRepository.save(user);
   }
 
+  /**
+   * Deletes a user by their ID.
+   *
+   * @param id The ID of the user to delete.
+   * @throws UserNotFoundException if the user with the given ID is not found.
+   */
   @Transactional
   public void deleteUser(Long id) {
     userRepository
@@ -54,15 +66,32 @@ public class UserService {
             });
   }
 
+  /**
+   * Retrieves a list of all users.
+   *
+   * @return A list of all users.
+   */
   public List<User> getAllUsers() {
     return userRepository.findAll();
   }
 
+  /**
+   * Updates a user's information.
+   *
+   * @param user The user with updated information.
+   */
   @Transactional
   public void updateUser(User user) {
     userRepository.update(user.getName(), user.getLastName(), user.getSurname(), user.getLogin(), user.getRole(), user.getId());
   }
 
+  /**
+   * Changes a user's password.
+   *
+   * @param userId The ID of the user.
+   * @param password The new password.
+   * @throws UserNotFoundException if the user with the given ID is not found.
+   */
   @Transactional
   public void changeUserPassword(Long userId, String password) {
     userRepository
@@ -74,6 +103,12 @@ public class UserService {
             });
   }
 
+  /**
+   * Blocks all cards for a specific user.
+   *
+   * @param userId The ID of the user.
+   * @throws UserNotFoundException if the user with the given ID is not found.
+   */
   public void blockUserCards(Long userId) {
     userRepository
         .findById(userId)
@@ -84,6 +119,12 @@ public class UserService {
             });
   }
 
+  /**
+   * Creates a new user.
+   *
+   * @param user The user to create.
+   * @throws UserAlreadyExistException if a user with the same login already exists.
+   */
   @Transactional
   public void createUser(User user) {
     var userDb = userRepository.findByLogin(user.getLogin());

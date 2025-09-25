@@ -18,6 +18,16 @@ public class CardBalanceService {
     private final CardRepository cardRepository;
     private final CardBalanceRepository cardBalanceRepository;
 
+    /**
+     * Transfers money from one card to another.
+     *
+     * @param user The user performing the transfer.
+     * @param cardFrom The card number to transfer from.
+     * @param cardTo The card number to transfer to.
+     * @param value The amount of money to transfer.
+     * @throws CardNotFoundException if either the source or destination card is not found.
+     * @throws CardOwnerException if the user does not own either of the cards.
+     */
     @Transactional
     public void transferMoney(User user, String cardFrom, String cardTo, BigDecimal value) {
         var cardFromDbOpt = cardRepository.findCardByNumber(encryptionCard.encrypt(cardFrom));
