@@ -177,4 +177,18 @@ class UserControllerTest {
     setupAdmin();
     mockMvc.perform(post("/users/cards/block").param("userId", "1")).andExpect(status().isOk());
   }
+
+  @Test
+  void blockUser_success() throws Exception {
+    setupAdmin();
+    mockMvc.perform(post("/users/1/block"))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void activateUser_success() throws Exception {
+    setupAdmin();
+    mockMvc.perform(post("/users/1/activate"))
+            .andExpect(status().isOk());
+  }
 }
