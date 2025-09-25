@@ -1,6 +1,5 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.UserPasswordDto;
 import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.UserStatus;
@@ -9,7 +8,6 @@ import com.example.bankcards.exception.UserNotFoundException;
 import com.example.bankcards.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,7 +80,13 @@ public class UserService {
    */
   @Transactional
   public void updateUser(User user) {
-    userRepository.update(user.getName(), user.getLastName(), user.getSurname(), user.getLogin(), user.getRole(), user.getId());
+    userRepository.update(
+        user.getName(),
+        user.getLastName(),
+        user.getSurname(),
+        user.getLogin(),
+        user.getRole(),
+        user.getId());
   }
 
   /**
@@ -135,5 +139,18 @@ public class UserService {
     user.setCreatedAt(LocalDateTime.now());
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
+  }
+
+  /**
+   * Changes the status of a user.
+   *
+   * @param userId The ID of the user.
+   * @param userStatus The new status of the user.
+   * @throws UserNotFoundException if the user with the given ID is not found.
+   */
+  @Transactional
+  public void changeUserStatus(Long userId, UserStatus userStatus) {
+    userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    userRepository.updateUserStatus(userId, userStatus);
   }
 }

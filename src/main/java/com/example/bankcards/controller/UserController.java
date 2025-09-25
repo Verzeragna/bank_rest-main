@@ -4,6 +4,7 @@ import com.example.bankcards.dto.UserCreationDto;
 import com.example.bankcards.dto.UserDto;
 import com.example.bankcards.dto.UserPasswordDto;
 import com.example.bankcards.dto.UserRegistrationDto;
+import com.example.bankcards.entity.UserStatus;
 import com.example.bankcards.mapper.UserMapper;
 import com.example.bankcards.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,6 +68,28 @@ public class UserController {
   @DeleteMapping("{userId}")
   public void deleteUser(@Parameter(description = "ID of the user") @NotNull @PathVariable("userId") Long id) {
     userService.deleteUser(id);
+  }
+
+  @Operation(summary = "Block a user", description = "Changes the user's status to BLOCKED.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully blocked user"),
+      @ApiResponse(responseCode = "404", description = "User not found")
+  })
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @PostMapping("{userId}/block")
+  public void blockUser(@Parameter(description = "ID of the user to block") @NotNull @PathVariable("userId") Long userId) {
+      userService.changeUserStatus(userId, UserStatus.BLOCKED);
+  }
+
+  @Operation(summary = "Activate a user", description = "Changes the user's status to ACTIVE.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully activated user"),
+      @ApiResponse(responseCode = "404", description = "User not found")
+  })
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @PostMapping("{userId}/activate")
+  public void activateUser(@Parameter(description = "ID of the user to activate") @NotNull @PathVariable("userId") Long userId) {
+    userService.changeUserStatus(userId, UserStatus.ACTIVE);
   }
 
   @Operation(summary = "Get all users")
