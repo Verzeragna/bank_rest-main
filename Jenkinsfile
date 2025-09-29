@@ -21,9 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Starting Maven build..."
-                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                    sh 'mvn -B -DskipTests clean package'
-                }
+                sh 'mvn -B -DskipTests clean package || true'
                 echo "Build stage completed."
             }
         }
@@ -31,9 +29,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Running tests..."
-                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test || true'
                 echo "Test stage completed."
             }
         }
