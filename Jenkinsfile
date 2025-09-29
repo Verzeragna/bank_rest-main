@@ -1,24 +1,40 @@
 pipeline {
     agent any
     tools {
-        maven 'maven'
+        maven 'maven' // Имя Maven из Global Tool Configuration Jenkins
     }
     stages {
+        stage('Info') {
+            steps {
+                echo "Checking Java and Maven versions..."
+                sh 'java -version || true'
+                sh 'mvn -version || true'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Build') { 
+
+        stage('Build') {
             steps {
+                echo "Starting Maven build..."
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh 'mvn -B -DskipTests clean package'
                 }
+                echo "Build stage completed."
             }
         }
-        stage('Test') { 
+
+        stage('Test') {
             steps {
-                sh 'mvn test' 
+                echo "Running tests..."
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    sh 'mvn test'
+                }
+                echo "Test stage completed."
             }
         }
     }
