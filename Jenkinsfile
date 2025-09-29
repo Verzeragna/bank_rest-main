@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        JAVA_HOME = "/etc/java-21-openjdk"
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }    
     tools {
         maven 'maven'
     }
@@ -20,6 +24,14 @@ pipeline {
             steps {
                 sh 'mvn test' 
             }
+        }
+    }
+    post {
+        success {
+            echo 'Сборка прошла успешно!'
+        }
+        failure {
+            echo 'Сборка завершилась с ошибкой!'
         }
     }
 }
