@@ -1,8 +1,5 @@
 pipeline {
-    agent any 
-    tools {
-        maven 'maven'
-    }
+    agent any
     stages {
         stage('Checkout') {
             steps {
@@ -20,14 +17,6 @@ pipeline {
             steps {
                 sh 'mvn test' 
             }
-        }
-    }
-    post {
-        success {
-            echo 'Сборка прошла успешно!'
-        }
-        failure {
-            echo 'Сборка завершилась с ошибкой!'
         }
     }
 }
