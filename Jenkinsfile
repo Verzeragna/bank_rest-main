@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        BOT_TOKEN = bot8234051771:AAFDF7Ee1X7L9wZ55cQAzLg1SRB_ATeUBcM
+    }
     tools {
         maven 'maven' // Имя Maven из Global Tool Configuration Jenkins
     }
@@ -37,6 +40,13 @@ pipeline {
         stage('Save artifact') {
             steps {
                 archiveArtifacts(artifacts: 'target/*.jar')
+            }
+            post {
+                success {
+                    curl -X POST -H 'Content-type: application/json' \
+                    --data '{"addlication": "bank_rest-main", "message": "Сборка прошла успешно" }' \
+                    https://api.telegram.org/$BOT_TOKEN/sendMessage
+                }
             }
         }
     }
