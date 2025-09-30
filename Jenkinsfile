@@ -33,5 +33,11 @@ pipeline {
                 echo "Test stage completed."
             }
         }
+        
+        stage('Save artifact') {
+            steps {
+                archiveArtifacts(artifacts: 'target/*.jar')
+            }
+        }
     }
 }
