@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        BOT_TOKEN = 'bot8234051771:AAFDF7Ee1X7L9wZ55cQAzLg1SRB_ATeUBcM'
-    }
     tools {
         maven 'maven' // Имя Maven из Global Tool Configuration Jenkins
     }
