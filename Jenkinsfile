@@ -43,9 +43,7 @@ pipeline {
             }
             post {
                 success {
-                    curl -X POST -H 'Content-type: application/json' \
-                    --data '{"addlication": "bank_rest-main", "message": "Сборка прошла успешно" }' \
-                    https://api.telegram.org/$BOT_TOKEN/sendMessage
+                    curl -X POST -H 'Content-type: application/json' --data '{"addlication": "bank_rest-main", "message": "Сборка прошла успешно" }' https://api.telegram.org/$BOT_TOKEN/sendMessage
                 }
             }
         }
