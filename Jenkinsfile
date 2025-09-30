@@ -41,16 +41,6 @@ pipeline {
             steps {
                 archiveArtifacts(artifacts: 'target/*.jar')
             }
-            post {
-                success {
-                    sh '''
-                      curl -X POST \
-                        -H "Content-Type: application/json" \
-                        --data \'{"application": "bank_rest-main", "message": "Сборка прошла успешно"}\' \
-                        https://api.telegram.org/$BOT_TOKEN/sendMessage
-                    '''
-                }
-            }
         }
     }
 }
